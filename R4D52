@@ -1,0 +1,109 @@
+# pygame - orbits
+
+import pygame
+import math
+
+# screen dimensions
+WIDTH = 600
+HEIGHT = 600
+FPS = 60
+
+# colors
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREY = (80, 80, 80)
+BLACK = (0, 0, 0)
+
+# init pygame
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+clock = pygame.time.Clock()
+pygame.display.set_caption("CIRCLES")
+
+# sun (center body)
+sun_orbit_pos = [WIDTH / 2, HEIGHT / 2]
+planets = [[50, 1, 50], [4, .5, 180], [2, 6, 0]]
+planets2 = [[50, 1, 50], [20, .2, 0], [2, 6, 0], [2, 4, 0]]
+position = [0, 0]
+postion1 = [0,0]
+positions = []
+positions1 = []
+
+done = False
+while not done:
+
+    # to stop the prgram
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+    screen.fill(GREY)
+
+    for c in range(0, len(planets)):
+        if c == 1:
+            position = [math.floor(positions[len(positions) - 1][0] + (math.sin(planets[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets[c - 1][0] + 25))),
+                        math.floor(positions[len(positions) - 1][1] + (math.cos(planets[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets[c - 1][0] + 25)))]
+        elif c == 2:
+            position = [math.floor(positions[len(positions) - 1][0] + (math.sin(planets[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets[c - 1][0] + 10))),
+                        math.floor(positions[len(positions) - 1][1] + (math.cos(planets[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets[c - 1][0] + 10)))]
+
+        else:
+            position = sun_orbit_pos
+
+        if c == 0:
+            pygame.draw.circle(screen, BLACK, position, planets[c][0], 2)
+        elif c == 1:
+            pygame.draw.circle(screen, BLACK, position, planets[c][0], 100)
+        else:
+            pygame.draw.circle(screen, BLACK, position, planets[c][0], 100)
+
+        planets[c][2] += planets[c][1]
+
+        positions.append(position)
+
+    position = []
+    #-------
+    for c in range(0, len(planets2)):
+        if c == 1:
+            position1 = [math.floor(positions1[len(positions1) - 1][0] + (math.sin(planets2[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets2[c - 1][0] + 150))),
+                        math.floor(positions1[len(positions1) - 1][1] + (math.cos(planets2[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets2[c - 1][0] + 150)))]
+        elif c == 2:
+            position1 = [math.floor(positions1[len(positions1) - 1][0] + (math.sin(planets2[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets2[c - 1][0] + 20))),
+                        math.floor(positions1[len(positions1) - 1][1] + (math.cos(planets2[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets2[c - 1][0] + 20)))]
+        elif c == 3:
+            position1 = [math.floor(positions1[len(positions1) - 2][0] + (math.sin(planets2[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets2[c - 2][0] + 30))),
+                        math.floor(positions1[len(positions1) - 2][1] + (math.cos(planets2[c][2] * (0.0174532925 * 2)) *
+                                                                       (planets2[c - 2][0] + 30)))]
+
+        else:
+            position1 = sun_orbit_pos
+
+        if c == 0:
+            pygame.draw.circle(screen, BLACK, position1, planets2[c][0], 2)
+        elif c == 1:
+            pygame.draw.circle(screen, BLACK, position1, planets2[c][0], 100)
+        elif c == 2:
+            pygame.draw.circle(screen, BLACK, position1, planets2[c][0], 100)
+        else:
+            pygame.draw.circle(screen, BLACK, position1, planets2[c][0], 100)
+
+        planets2[c][2] += planets2[c][1]
+
+        positions1.append(position1)
+
+    position1 = []
+
+    pygame.display.update()
+
+    clock.tick(20)
+
+pygame.quit()
